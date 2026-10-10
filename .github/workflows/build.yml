@@ -22,14 +22,15 @@ jobs:
       - name: Build APK
         run: |
           npx cap sync android
-          cd android && chmod +x gradlew && ./gradlew assembleDebug --stacktrace
-      - name: Show failure logs
-        if: failure()
-        run: |
-          echo "=== Gradle logs ==="
-          find android -name "*.log" -exec cat {} \; 2>/dev/null | tail -n 200
-          echo "=== Build outputs ==="
-          ls -la android/app/build/ 2>/dev/null || echo "No build dir"
+          cd android && chmod +x gradlew && ./gradlew assembleDebug --stacktrace 2>&1 | tee /tmp/build.log
+          echo "EXIT:$?" | tee -a /tmp/build.log
+      - name: Upload logs on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: /tmp/build.log
+          if-no-files-found: warn
       - name: Upload APK
         if: success()
         uses: actions/upload-artifact@v4
