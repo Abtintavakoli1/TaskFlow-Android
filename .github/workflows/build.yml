@@ -23,7 +23,15 @@ jobs:
         run: |
           npx cap sync android
           cd android && chmod +x gradlew && ./gradlew assembleDebug --stacktrace
+      - name: Show failure logs
+        if: failure()
+        run: |
+          echo "=== Gradle logs ==="
+          find android -name "*.log" -exec cat {} \; 2>/dev/null | tail -n 200
+          echo "=== Build outputs ==="
+          ls -la android/app/build/ 2>/dev/null || echo "No build dir"
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: TaskFlow-debug.apk
