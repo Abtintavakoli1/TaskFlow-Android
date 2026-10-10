@@ -1,0 +1,15 @@
+﻿{
+    "appId":  "com.taskflow.app",
+    "appName":  "TaskFlow",
+    "webDir":  "www",
+    "plugins":  {
+                    "SplashScreen":  {
+                                         "launchShowDuration":  1500,
+                                         "backgroundColor":  "#F0FDFA"
+                                     },
+                    "StatusBar":  {
+                                      "style":  "LIGHT",
+                                      "backgroundColor":  "#0D9488"
+                                  }
+                }
+}

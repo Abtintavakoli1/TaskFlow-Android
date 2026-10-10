@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#0D9488">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TaskFlow Pro">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>✓</text></svg>">
+<title>TaskFlow — اندروید</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style id="offline-fonts">
+@font-face{font-family:"Vazirmatn";src:url("fonts/Vazirmatn-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Vazirmatn";src:url("fonts/Vazirmatn-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Vazirmatn";src:url("fonts/Vazirmatn-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Vazirmatn";src:url("fonts/Vazirmatn-Bold.woff2") format("woff2");font-weight:800;font-style:normal;font-display:swap}
+html,body,button,input,select,textarea{font-family:"Vazirmatn",Tahoma,"Segoe UI",system-ui,sans-serif !important}
+.cat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 18px 0}.cat-tab{padding:6px 14px;border-radius:999px;border:1.5px solid var(--gray-200);background:#fff;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;color:var(--gray-500)}.cat-tab.active{background:var(--teal);color:#fff;border-color:var(--teal)}.cat-tab[data-cat="کاری"].active{background:#0D9488}.cat-tab[data-cat="شخصی"].active{background:#8B5CF6}.cat-tab[data-cat="سلامتی"].active{background:#F59E0B;color:#fff}.pomo{display:flex;align-items:center;gap:8px;padding:10px 14px;background:linear-gradient(135deg,#0D9488,#14B8A6);color:#fff;border-radius:14px;margin:10px 18px 0;flex-wrap:wrap}.pomo b{font-size:20px;font-variant-numeric:tabular-nums;letter-spacing:1px}.pomo small{opacity:.9;font-size:11px}.pomo .pbtn{background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 12px;border-radius:999px;font-size:12px;cursor:pointer;font-family:inherit}.pomo .pbtn:hover{background:rgba(255,255,255,.32)}.voice-btn{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#EA580C,#F97316);color:#fff;display:grid;place-items:center;cursor:pointer;border:none;box-shadow:0 4px 14px rgba(234,88,12,.35);transition:.2s;font-size:18px}.voice-btn.listening{animation:vPulse 1s infinite;background:linear-gradient(135deg,#DC2626,#EF4444)}@keyframes vPulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}70%{box-shadow:0 0 0 14px rgba(239,68,68,0)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}}.voice-hint{font-size:11px;color:var(--gray-500);margin-top:6px;line-height:1.6}.tpl-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 18px;background:#FFF7ED;border-bottom:1px solid #FFEDD5}.tpl-bar small{font-size:11px;color:var(--gray-500);font-weight:600}.task-item.overdue{animation:pulseOverdue 1.8s ease-in-out infinite;border-right:3px solid var(--red);background:#FFF5F5}@keyframes pulseOverdue{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}50%{box-shadow:0 0 0 8px rgba(239,68,68,.12)}}.task-item.justDone{animation:popDone .45s ease}@keyframes popDone{0%{transform:scale(1)}40%{transform:scale(1.02);background:#ECFDF5}100%{transform:scale(1)}}.confetti{position:fixed;pointer-events:none;z-index:99;font-size:18px;animation:confettiFall 900ms ease forwards}@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0) scale(1);opacity:1}100%{transform:translateY(120px) rotate(720deg) scale(0);opacity:0}}.sound-bar{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:12px;margin-top:10px}.sound-bar label{font-size:11px;font-weight:700;color:var(--gray-700)}.sound-bar input[type="range"]{flex:1;accent-color:var(--teal)}
+</style>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#0D9488; --teal-dark:#0F766E; --teal-light:#CCFBF1; --teal-bg:#F0FDFA;
+  --orange:#EA580C; --orange-light:#FFF7ED; --gray-50:#F8FAFC; --gray-100:#F1F5F9;
+  --gray-200:#E2E8F0; --gray-300:#CBD5E1; --gray-400:#94A3B8; --gray-500:#64748B;
+  --gray-700:#334155; --gray-800:#1E293B; --gray-900:#0F172A;
+  --green:#10B981; --blue:#3B82F6; --purple:#8B5CF6; --red:#EF4444; --yellow:#F59E0B;
+  --radius:16px; --radius-sm:10px; --shadow:0 4px 24px rgba(0,0,0,.06);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.1);
+}
+html{scroll-behavior:smooth}
+body{font-family:"Vazirmatn",system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+/* Header */
+.header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--gray-200)}
+.header-inner{max-width:1280px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;color:var(--gray-900)}
+.logo-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));display:grid;place-items:center;color:#fff;font-size:18px;box-shadow:0 4px 12px rgba(13,148,136,.35)}
+.logo span{font-size:15px;color:var(--gray-500);font-weight:500}
+.nav{display:flex;gap:6px;align-items:center}
+.nav a{padding:8px 16px;border-radius:999px;font-size:13px;font-weight:500;color:var(--gray-500);transition:.2s}
+.nav a.active,.nav a:hover{background:var(--gray-900);color:#fff}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;font-weight:600;font-size:14px;border:none;cursor:pointer;transition:.2s}
+.btn-primary{background:var(--gray-900);color:#fff;box-shadow:0 4px 16px rgba(15,23,42,.25)}
+.btn-primary:hover{background:#1E293B;transform:translateY(-1px)}
+.btn-teal{background:var(--teal);color:#fff}
+.btn-teal:hover{background:var(--teal-dark)}
+.btn-ghost{background:var(--gray-100);color:var(--gray-700)}
+.btn-ghost:hover{background:var(--gray-200)}
+.btn-sm{padding:7px 14px;font-size:12px}
+.icon-btn{width:40px;height:40px;border-radius:12px;border:1px solid var(--gray-200);background:#fff;display:grid;place-items:center;cursor:pointer;transition:.2s;font-size:16px}
+.icon-btn:hover{border-color:var(--teal);background:var(--teal-bg)}
+
+/* Hero */
+.hero{max-width:1280px;margin:0 auto;padding:36px 20px 20px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+.hero h1{font-size:clamp(28px,4vw,44px);font-weight:800;line-height:1.2;color:var(--gray-900)}
+.hero h1 em{color:var(--teal);font-style:normal}
+.hero p{margin:14px 0 22px;color:var(--gray-500);font-size:15px;line-height:1.8;max-width:520px}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.hero-bullets{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--gray-500)}
+.hero-bullets span{display:flex;align-items:center;gap:6px}
+.hero-bullets i{width:22px;height:22px;border-radius:50%;background:var(--teal-light);color:var(--teal);display:grid;place-items:center;font-size:11px;font-style:normal}
+.hero-card{background:#fff;border-radius:20px;box-shadow:var(--shadow-lg);overflow:hidden;border:1px solid var(--gray-200)}
+.hero-card-head{padding:16px 18px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between}
+.hero-card-head h3{font-size:13px;font-weight:700}
+.hero-card-head small{font-size:11px;color:var(--gray-400)}
+.task-row{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid #F8FAFC}
+.task-row:last-child{border:none}
+.check{width:22px;height:22px;border-radius:50%;border:2px solid var(--gray-300);display:grid;place-items:center;flex-shrink:0;cursor:pointer;transition:.2s;font-size:11px}
+.check.done{background:var(--teal);border-color:var(--teal);color:#fff}
+.task-meta{flex:1;min-width:0}
+.task-meta b{font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.task-meta small{font-size:11px;color:var(--gray-400)}
+.badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.b-today{background:var(--orange-light);color:var(--orange);border:1px solid #FFEDD5}
+.b-tomorrow{background:#EFF6FF;color:var(--blue);border:1px solid #DBEAFE}
+.b-week{background:#F5F3FF;color:var(--purple);border:1px solid #EDE9FE}
+.progress-wrap{padding:14px 18px;background:var(--gray-50);display:flex;align-items:center;gap:12px}
+.progress-bar{flex:1;height:8px;background:var(--gray-200);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),#14B8A6);border-radius:999px;transition:width .5s ease}
+
+/* Main layout */
+.main{max-width:1280px;margin:0 auto;padding:14px 20px 40px;display:grid;grid-template-columns:1fr 340px;gap:20px}
+.card{background:#fff;border-radius:var(--radius);border:1px solid var(--gray-200);box-shadow:var(--shadow);overflow:hidden}
+.card-head{padding:16px 18px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.card-head h2{font-size:15px;font-weight:800}
+.card-head p{font-size:12px;color:var(--gray-400)}
+
+/* Filters */
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filter-btn{padding:6px 14px;border-radius:999px;border:1px solid var(--gray-200);background:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:.2s;color:var(--gray-500)}
+.filter-btn.active{background:var(--gray-900);color:#fff;border-color:var(--gray-900)}
+.search-box{position:relative;flex:1;min-width:140px;max-width:260px}
+.search-box input{width:100%;padding:8px 36px 8px 12px;border:1px solid var(--gray-200);border-radius:999px;font-family:inherit;font-size:13px;outline:none;background:var(--gray-50)}
+.search-box input:focus{border-color:var(--teal);background:#fff}
+.search-box::after{content:"\1F50D";position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.6}
+
+/* Task list */
+.task-list{max-height:560px;overflow:auto}
+.task-item{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid #F8FAFC;transition:background .15s}
+.task-item:hover{background:#F8FAFC}
+.task-item.done{opacity:.6}
+.task-item.done b{text-decoration:line-through;color:var(--gray-400)}
+.task-info{flex:1;min-width:0}
+.task-info b{font-size:13px;display:block}
+.task-info small{font-size:11px;color:var(--gray-400)}
+.task-actions{display:flex;gap:6px;align-items:center}
+.tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:999px;background:var(--gray-100);color:var(--gray-500);border:1px solid var(--gray-200)}
+.prio{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.prio-high{background:var(--red)} .prio-med{background:var(--yellow)} .prio-low{background:var(--green)}
+
+/* Right sidebar */
+.sidebar{display:flex;flex-direction:column;gap:16px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:#fff;border-radius:14px;border:1px solid var(--gray-200);padding:14px;box-shadow:var(--shadow)}
+.stat small{font-size:11px;color:var(--gray-400);font-weight:600}
+.stat b{font-size:22px;display:block;margin:4px 0 2px}
+.stat span{font-size:10px;padding:2px 6px;border-radius:999px;font-weight:700}
+.up{color:var(--green);background:#ECFDF5} .down{color:var(--red);background:#FEF2F2}
+.chart-box{padding:16px}
+.bar-row{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:11px;color:var(--gray-500)}
+.bar-row b{width:40px;text-align:left}
+.bar{flex:1;height:8px;background:var(--gray-100);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px}
+.sheet-box{padding:16px}
+.sheet-box ul{list-style:none;display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.sheet-box li{font-size:12px;display:flex;align-items:center;gap:8px;color:var(--gray-700)}
+.sheet-box li i{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-style:normal;flex-shrink:0}
+.sheet-box code{font-size:11px;background:var(--gray-100);padding:6px 10px;border-radius:8px;display:block;word-break:break-all;margin-top:8px;border:1px solid var(--gray-200)}
+.notif-list{display:flex;flex-direction:column;gap:8px;max-height:200px;overflow:auto}
+.notif{padding:10px 12px;border-radius:12px;background:var(--gray-50);border:1px solid var(--gray-100);font-size:12px}
+.notif b{font-size:11px;color:var(--teal)}
+
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+.modal.open{display:flex}
+.modal-box{background:#fff;border-radius:20px;width:min(520px,100%);box-shadow:var(--shadow-lg);overflow:hidden;animation:pop .25s ease}
+@keyframes pop{from{transform:scale(.96) translateY(8px);opacity:0} to{transform:scale(1) translateY(0);opacity:1}}
+.modal-head{padding:18px 20px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between}
+.modal-head h3{font-size:15px;font-weight:800}
+.modal-body{padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.field label{font-size:12px;font-weight:700;color:var(--gray-700);display:block;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--gray-200);border-radius:12px;font-family:inherit;font-size:13px;outline:none;background:#fff}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,148,136,.12)}
+.field textarea{resize:vertical;min-height:72px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-foot{padding:16px 20px;border-top:1px solid var(--gray-100);display:flex;gap:10px;justify-content:flex-end}
+.hint{font-size:11px;color:var(--gray-400);background:var(--gray-50);padding:8px 10px;border-radius:10px;border:1px dashed var(--gray-200)}
+
+/* Toast */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gray-900);color:#fff;padding:12px 18px;border-radius:999px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:.35s;z-index:80;display:flex;align-items:center;gap:10px;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* Footer */
+.footer{max-width:1280px;margin:0 auto;padding:20px;text-align:center;font-size:11px;color:var(--gray-400);border-top:1px solid var(--gray-100)}
+
+/* Responsive */
+@media(max-width:960px){.hero{grid-template-columns:1fr}.main{grid-template-columns:1fr}.sidebar{order:-1}}
+@media(max-width:640px){.header-inner{flex-wrap:wrap}.nav{width:100%;overflow:auto;scrollbar-width:none}.nav a{white-space:nowrap}.grid2{grid-template-columns:1fr}.hero-cta .btn{flex:1;justify-content:center}}
+.empty{padding:40px 20px;text-align:center;color:var(--gray-400)}
+.empty i{font-size:32px;display:block;margin-bottom:10px;font-style:normal}
+
+/* === ANDROID MOBILE OPTIMIZATION === */
+html{ -webkit-tap-highlight-color:transparent; scrollbar-width:thin }
+body{ padding-bottom:calc(76px + env(safe-area-inset-bottom,0px)); }
+.header{ padding-top:env(safe-area-inset-top,0px) }
+.header-inner{ padding:10px 14px }
+.hamburger{ display:none; width:40px;height:40px;border-radius:12px;border:1px solid var(--gray-200);background:#fff;place-items:center;font-size:18px;cursor:pointer }
+.drawer{ position:fixed; inset:0; z-index:55; display:none }
+.drawer.open{ display:block }
+.drawer-backdrop{ position:absolute; inset:0; background:rgba(15,23,42,.42); backdrop-filter:blur(4px) }
+.drawer-panel{ position:absolute; top:0; right:0; bottom:0; width:min(84vw,320px); background:#fff; box-shadow:-12px 0 40px rgba(0,0,0,.12); padding:16px; overflow:auto; border-left:1px solid var(--gray-200); padding-top:calc(16px + env(safe-area-inset-top,0px)) }
+.drawer-panel a{ display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:14px; font-size:14px; font-weight:600; color:var(--gray-700); border:1px solid transparent }
+.drawer-panel a.active{ background:var(--gray-900); color:#fff }
+.drawer-panel a:hover{ background:var(--gray-50) }
+.bottom-nav{ position:fixed; left:0; right:0; bottom:0; z-index:45; background:rgba(255,255,255,.96); backdrop-filter:blur(16px); border-top:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-around; padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px)); height:calc(64px + env(safe-area-inset-bottom,0px)) }
+.bottom-nav a{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; font-size:10px; font-weight:700; color:var(--gray-400); padding:6px 2px; border-radius:12px; text-decoration:none; min-height:44px }
+.bottom-nav a.active{ color:var(--teal); background:var(--teal-bg) }
+.bottom-nav a i{ font-size:18px; font-style:normal; line-height:1 }
+.fab{ position:fixed; left:50%; transform:translateX(-50%); bottom:calc(20px + 64px + env(safe-area-inset-bottom,0px)); z-index:46; width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,var(--gray-900),#1E293B); color:#fff; display:grid; place-items:center; font-size:26px; border:none; box-shadow:0 10px 28px rgba(15,23,42,.28), 0 2px 8px rgba(15,23,42,.18); cursor:pointer; }
+.fab:active{ transform:translateX(-50%) scale(.96) }
+.android-badge{ display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; padding:6px 10px; border-radius:999px; margin-bottom:10px }
+.task-item, .task-row, .pomo, .tpl-bar{ -webkit-touch-callout:none }
+.field input, .field select, .field textarea{ font-size:16px } /* prevent Android zoom on focus */
+.search-box input{ font-size:14px }
+.btn, .filter-btn, .cat-tab, .pbtn, .icon-btn{ min-height:40px }
+.cat-tabs, .filters{ scrollbar-width:none; -webkit-overflow-scrolling:touch }
+.cat-tabs::-webkit-scrollbar, .filters::-webkit-scrollbar{ display:none }
+@media(max-width:768px){
+  .nav{ display:none !important }
+  .hamburger{ display:grid !important }
+  .hero{ grid-template-columns:1fr !important; padding:18px 14px 12px !important; gap:16px !important }
+  .hero h1{ font-size:clamp(24px,7vw,30px) !important }
+  .hero p{ font-size:13px !important; line-height:1.7 !important }
+  .hero-cta .btn{ flex:1; justify-content:center; min-height:44px }
+  .main{ grid-template-columns:1fr !important; padding:10px 12px 16px !important; gap:14px !important }
+  .sidebar{ order:0 !important }
+  .hero-card{ border-radius:16px !important }
+  .card{ border-radius:14px !important }
+  .card-head{ flex-direction:column; align-items:stretch !important }
+  .search-box{ max-width:none !important }
+  .task-list{ max-height:none !important }
+  .grid2{ grid-template-columns:1fr !important }
+  .pomo{ flex-wrap:wrap; gap:6px; padding:10px 12px }
+  .pomo b{ font-size:18px }
+  .tpl-bar{ padding:10px 12px }
+  .stat-grid{ gap:8px }
+  .stat{ padding:12px }
+  .stat b{ font-size:18px }
+  .modal{ padding:10px; align-items:flex-end }
+  .modal-box{ width:100% !important; border-radius:20px 20px 0 0 !important; max-height:92dvh; overflow:auto }
+  .sheet-box ul{ gap:6px }
+}
+@media(min-width:769px){
+  .bottom-nav, .fab, .drawer, .hamburger{ display:none !important }
+  body{ padding-bottom:0 !important }
+}
+
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo"><div class="logo-icon">✓</div> TaskFlow Pro <span>هوشمند · آنلاین · همه‌جا</span></div>
+    <nav class="nav">
+      <a href="#" class="active">داشبورد</a>
+      <a href="#tasks">کارها</a>
+      <a href="#stats">آمار</a>
+      <a href="#sheet">گوگل شیت</a>
+      <a href="#settings">تنظیمات</a>
+    </nav>
+    <button class="hamburger" id="hamburgerBtn" aria-label="منو">☰</button>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="icon-btn" id="notifBtn" title="فعال‌سازی یادآوری">🔔</button>
+      <button class="btn btn-primary btn-sm" id="newTaskBtn">+ کار جدید</button>
+    </div>
+  </div>
+</header>
+<section class="hero">
+  <div>
+    <div class="android-badge">🤖 نسخه اندروید — مستقل، همگام با گوگل شیت</div>
+    <h1>هر روزت را <em>هوشمند</em><br>مدیریت کن،<br>هیچ کاری جا نمونه.</h1>
+    <p>TaskFlow Pro کارهای روزانه‌ات را ثبت می‌کند، به گوگل شیت وصل می‌شود، پیشرفتت را لحظه‌ای گزارش می‌دهد و با ناتیفیکیشن هوشمند هیچ ددلاینی را فراموش نمی‌کنی — روی موبایل، دسکتاپ و هر مرورگری.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary" id="heroAdd">+ افزودن کار روزانه</button>
+      <button class="btn btn-ghost" id="heroSync">↻ همگام‌سازی با Google Sheets</button>
+    </div>
+    <div class="hero-bullets">
+      <span><i>✓</i> آفلاین کار می‌کند</span>
+      <span><i>◐</i> PWA قابل نصب</span>
+      <span><i>🔗</i> اتصال گوگل شیت</span>
+      <span><i>🔔</i> یادآور هوشمند</span>
+    </div>
+  </div>
+  <div class="hero-card" id="heroCard">
+    <div class="hero-card-head"><h3>امروز — <span id="todayLabel"></span></h3><small id="heroProgress">0% تکمیل</small></div>
+    <div id="heroTasks"></div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="heroFill" style="width:0%"></div></div>
+      <small id="heroCount" style="font-size:11px;color:var(--gray-500);white-space:nowrap">0 از 0</small>
+    </div>
+  </div>
+</section>
+
+<main class="main">
+  <section class="card" id="tasks">
+    <div class="card-head">
+      <div><h2>کارهای من</h2><p id="taskSubtitle">همهٔ کارها — فیلتر و جستجو کن</p></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <div class="search-box"><input id="search" placeholder="جستجوی کار..."></div>
+        <button class="btn btn-ghost btn-sm" id="exportCsv">⬇ CSV</button>
+        <button class="btn btn-teal btn-sm" id="addTask2">+ جدید</button>
+      </div>
+    </div>
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-tab active" data-cat="all">همه</button>
+      <button class="cat-tab" data-cat="کاری">کاری</button>
+      <button class="cat-tab" data-cat="شخصی">شخصی</button>
+      <button class="cat-tab" data-cat="سلامتی">سلامتی</button>
+      <button class="cat-tab" data-cat="other">سایر</button>
+    </div>
+    <div class="pomo" id="pomoBar">
+      <span>🍅</span>
+      <b id="pomoTime">25:00</b>
+      <small id="pomoLabel">پومودورو — تمرکز 25 دقیقه</small>
+      <button class="pbtn" id="pomoStart">▶ شروع</button>
+      <button class="pbtn" id="pomoPause" style="display:none">⏸ توقف</button>
+      <button class="pbtn" id="pomoReset">↻ ریست</button>
+      <select id="pomoTask" style="margin-right:auto;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:999px;padding:4px 8px;font-size:11px;max-width:150px"><option value="">— انتخاب کار —</option></select>
+    </div>
+    <div class="tpl-bar">
+      <small>⚡ قالب روزانه:</small>
+      <button class="btn btn-ghost btn-sm" id="btnTplToday">امروزم را بساز</button>
+      <button class="btn btn-ghost btn-sm" id="btnSaveTpl">ذخیره به‌عنوان قالب</button>
+      <button class="btn btn-ghost btn-sm" id="btnTplManage">مدیریت قالب‌ها</button>
+      <small style="margin-right:auto">کارهای تکراری دیروز را یک‌کلیک کپی می‌کند</small>
+    </div>
+    <div class="filters" style="padding:12px 18px;border-bottom:1px solid var(--gray-100)">
+      <button class="filter-btn active" data-f="all">همه</button>
+      <button class="filter-btn" data-f="today">امروز</button>
+      <button class="filter-btn" data-f="pending">مانده</button>
+      <button class="filter-btn" data-f="done">انجام‌شده</button>
+      <button class="filter-btn" data-f="overdue">عقب‌افتاده</button>
+      <select id="sortSel" style="margin-right:auto;padding:6px 10px;border-radius:999px;border:1px solid var(--gray-200);font-family:inherit;font-size:12px">
+        <option value="newest">جدیدترین</option>
+        <option value="due">نزدیک‌ترین ددلاین</option>
+        <option value="priority">اولویت</option>
+      </select>
+    </div>
+    <div class="task-list" id="taskList"></div>
+  </section>
+
+<aside class="sidebar">
+    <div class="stat-grid">
+      <div class="stat"><small>انجام‌شده امروز</small><b id="sDone">0</b><span class="up" id="sDoneSub"></span></div>
+      <div class="stat"><small>باقی‌مانده</small><b id="sPending">0</b><span class="down" id="sPendSub"></span></div>
+      <div class="stat"><small>نرخ موفقیت</small><b id="sRate">0%</b><span class="up" id="sRateSub">نمودار زیر</span></div>
+      <div class="stat"><small>رشتهٔ روز</small><b id="sStreak">0 روز</b><span class="up">ادامه بده!</span></div>
+    </div>
+
+        <!-- Voice input (feature 4) -->
+    <div class="card" style="padding:14px">
+      <h3 style="font-size:13px;font-weight:800">🎙️ ورودی صوتی</h3>
+      <p class="voice-hint">بگو: "فردا ساعت 4 گزارش بفرست" — خودکار کار می‌سازد</p>
+      <div style="display:flex;gap:10px;align-items:center;margin-top:10px">
+        <button class="voice-btn" id="voiceBtn" title="ضبط صدا">🎤</button>
+        <div style="flex:1">
+          <div id="voiceText" style="font-size:12px;color:var(--gray-700);min-height:18px">آماده‌ام — بزن و حرف بزن</div>
+          <small id="voiceStatus" style="font-size:10px;color:var(--gray-400)">روی موبایل و دسکتاپ (کروم/سفاری) کار می‌کند</small>
+        </div>
+      </div>
+      <div id="voicePreview" style="display:none;margin-top:10px;padding:10px;background:var(--gray-50);border:1px dashed var(--gray-200);border-radius:12px;font-size:12px"></div>
+    </div>
+    <div class="card chart-box" id="stats">
+      <div style="display:flex;align-items:center;justify-content:space-between"><h3 style="font-size:13px;font-weight:800">عملکرد ۷ روز گذشته</h3><small style="color:var(--gray-400);font-size:11px">انجام‌شده / کل</small></div>
+      <div id="chart" style="margin-top:10px"></div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-ghost btn-sm" style="flex:1" id="btnShare">⎙ اشتراک آمار</button>
+        <button class="btn btn-ghost btn-sm" style="flex:1" id="btnWeeklyPdf">📄 PDF هفتگی</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-ghost btn-sm" style="flex:1" id="btnResetWeek">↻ ریست هفته</button>
+        <button class="btn btn-ghost btn-sm" style="flex:1" id="btnEmailReport">✉ ارسال ایمیل</button>
+      </div>
+    </div>
+
+        <!-- Google Calendar (feature 6) -->
+    <div class="card" style="padding:14px">
+      <h3 style="font-size:13px;font-weight:800">📅 اتصال به Google Calendar</h3>
+      <p style="font-size:11px;color:var(--gray-500);margin:6px 0">هر کار با تاریخ و ساعت را با یک کلیک به تقویمت اضافه کن</p>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" id="btnGcalToday" style="flex:1">امروز به تقویم</button>
+        <button class="btn btn-ghost btn-sm" id="btnGcalAll" style="flex:1">همه کارها</button>
+      </div>
+      <small style="font-size:10px;color:var(--gray-400)">بدون نیاز به لاگین — از طریق لینک Google Calendar</small>
+    </div>
+    <!-- Telegram Bot (feature 5) -->
+    <div class="card" style="padding:14px">
+      <h3 style="font-size:13px;font-weight:800">🤖 ربات تلگرام</h3>
+      <p style="font-size:11px;color:var(--gray-500);margin:6px 0">یادآوری حتی وقتی مرورگر بسته است — از طریق تلگرام</p>
+      <div class="field"><label>توکن ربات (BotFather)</label><input id="tgToken" placeholder="1234:ABC..."></div>
+      <div class="field" style="margin-top:8px"><label>Chat ID</label><input id="tgChatId" placeholder="123456789"></div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn btn-ghost btn-sm" id="btnTgSave" style="flex:1">ذخیره</button>
+        <button class="btn btn-ghost btn-sm" id="btnTgTest" style="flex:1">تست</button>
+      </div>
+      <button class="btn btn-teal btn-sm" id="btnTgSendPending" style="width:100%;margin-top:8px">ارسال کارهای امروز به تلگرام</button>
+      <code id="tgStatus" style="font-size:11px;background:var(--gray-100);padding:6px 10px;border-radius:8px;display:block;margin-top:8px">وضعیت: تنظیم نشده</code>
+      <details style="margin-top:8px"><summary style="font-size:11px;cursor:pointer;color:var(--teal);font-weight:700">راهنمای ساخت ربات</summary><p style="font-size:11px;color:var(--gray-600);margin-top:6px;line-height:1.8">1) در تلگرام @BotFather را باز کن، /newbot بزن، توکن را بگیر<br>2) به رباتت یک پیام بده، سپس به https://api.telegram.org/botTOKEN/getUpdates برو و Chat ID را بردار</p></details>
+    </div>
+    <div class="card sheet-box" id="sheet">
+      <h3 style="font-size:13px;font-weight:800">🔗 اتصال به Google Sheets</h3>
+      <p style="font-size:11px;color:var(--gray-500);margin:6px 0 4px">با این اتصال (ارسال / دریافت) کارها را با گوگل شیت همگام‌سازی کن. اتصال امن و سریع بدون نیاز به افزونهٔ اضافی.</p>
+      <ul>
+        <li><i style="background:var(--teal-light);color:var(--teal)">1</i> یک Google Sheet بساز و کد Web App ارائه‌شده را قرار بده</li>
+        <li><i style="background:#EFF6FF;color:var(--blue)">2</i> URL را کپی کرده و در کادر زیر ذخیره کن</li>
+        <li><i style="background:#F5F3FF;color:var(--purple)">3</i> سپس همگام‌سازی را تست کن</li>
+      </ul>
+      <div class="field"><label>Apps Script Web App URL</label><input id="sheetUrl" placeholder="https://script.google.com/macros/s/.../exec"></div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn btn-teal btn-sm" id="saveSheet" style="flex:1">ذخیره اتصال</button>
+        <button class="btn btn-ghost btn-sm" id="testSheet" style="flex:1">تست اتصال</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-ghost btn-sm" id="pullSheet" style="flex:1">⬇ دریافت از شیت</button>
+        <button class="btn btn-ghost btn-sm" id="pushSheet" style="flex:1">⬆ ارسال به شیت</button>
+      </div>
+      <code id="sheetStatus">وضعیت: تنظیم نشده</code>
+      <details style="margin-top:10px"><summary style="font-size:11px;cursor:pointer;color:var(--teal);font-weight:700">کد Apps Script آماده (کپی کن)</summary><pre id="appsScriptCode" style="font-size:10px;background:var(--gray-900);color:#E2E8F0;padding:12px;border-radius:10px;overflow:auto;max-height:220px;margin-top:8px;direction:ltr;text-align:left"></pre></details>
+    </div>
+
+    <div class="card" style="padding:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between"><h3 style="font-size:13px;font-weight:800">🔔 یادآوری‌ها</h3><label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer"><input type="checkbox" id="notifToggle"> فعال</label></div>
+      <div style="display:flex;gap:8px;margin:10px 0">
+        <select id="remindEvery" style="flex:1;padding:8px;border-radius:10px;border:1px solid var(--gray-200);font-family:inherit;font-size:12px">
+          <option value="30">هر ۳۰ دقیقه</option>
+          <option value="60" selected>هر ۱ ساعت</option>
+          <option value="120">هر ۲ ساعت</option>
+          <option value="240">هر ۴ ساعت</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" id="testNotif">تست نوتیف</button>
+      </div>
+      <div class="field"><label>یادآوری روزانه (ساعت)</label><input type="time" id="dailyTime" value="09:00"></div>
+            <div class="sound-bar">
+        <label>🔊 صدا</label>
+        <label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer"><input type="checkbox" id="soundToggle" checked> فعال</label>
+        <input type="range" id="soundVol" min="0" max="100" value="70" title="صدا">
+        <button class="icon-btn" id="testSound" title="تست صدا" style="width:30px;height:30px;font-size:12px">♫</button>
+      </div>
+      <p style="font-size:10px;color:#94A3B8;margin-top:6px">صداهای مختلف برای انجام‌شدن، یادآوری و عقب‌افتادن — روی موبایل لرزش هم دارد.</p>
+      <div class="notif-list" id="notifList" style="margin-top:10px"></div>
+    </div>
+
+    <div class="card" style="padding:14px" id="settings">
+      <h3 style="font-size:13px;font-weight:800">⚙️ تنظیمات عمومی</h3>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" id="btnInstall">⬇ نصب اپ</button>
+        <button class="btn btn-ghost btn-sm" id="btnBackup">⬇ بکاپ JSON</button>
+        <button class="btn btn-ghost btn-sm" id="btnRestore">⬆ بازیابی</button>
+        <input type="file" id="restoreFile" accept=".json" hidden>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-ghost btn-sm" id="btnClear" style="flex:1;color:var(--red);border-color:#FECACA">پاک‌سازی</button>
+        <button class="btn btn-ghost btn-sm" id="btnDemo" style="flex:1">داده نمونه</button>
+      </div>
+      <p style="font-size:11px;color:var(--gray-400);margin-top:10px">PWA آماده است؛ با گزینه Install / Add to Home Screen روی موبایل یا دسکتاپ نصب کن تا آفلاین هم کار کند. فایل بکاپ JSON برای انتقال داده بین دستگاه‌هاست.</p>
+    </div>
+  </aside>
+</main>
+
+<div class="drawer" id="drawer">
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <div class="drawer-panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div class="logo"><div class="logo-icon">✓</div> TaskFlow</div>
+      <button class="icon-btn" id="drawerClose" style="width:36px;height:36px">✕</button>
+    </div>
+    <nav style="display:flex;flex-direction:column;gap:6px">
+      <a href="#" class="active" data-drawer="home">🏠 داشبورد</a>
+      <a href="#tasks" data-drawer="tasks">📝 کارها</a>
+      <a href="#stats" data-drawer="stats">📊 آمار</a>
+      <a href="#sheet" data-drawer="sheet">🔗 گوگل شیت</a>
+      <a href="#settings" data-drawer="settings">⚙️ تنظیمات</a>
+    </nav>
+    <div style="margin-top:14px;padding:12px;background:var(--teal-bg);border:1px solid #CCFBF1;border-radius:14px">
+      <b style="font-size:12px;color:var(--teal-dark)">همگام با دسکتاپ</b>
+      <p style="font-size:11px;color:var(--gray-600);margin-top:4px;line-height:1.7">این نسخه داده‌هایش جدا ذخیره می‌شود، ولی با <b>همان Google Sheet</b> شما همگام است.</p>
+      <code id="sheetStatusDrawer" style="font-size:10px;background:#fff;padding:6px 8px;border-radius:8px;display:block;margin-top:8px;word-break:break-all;border:1px solid #CCFBF1">وضعیت: بررسی...</code>
+    </div>
+  </div>
+</div>
+
+<button class="fab" id="fabAdd" aria-label="کار جدید">+</button>
+<nav class="bottom-nav" id="bottomNav">
+  <a href="#" class="active" data-nav="home"><i>🏠</i>خانه</a>
+  <a href="#tasks" data-nav="tasks"><i>📝</i>کارها</a>
+  <a href="#stats" data-nav="stats"><i>📊</i>آمار</a>
+  <a href="#sheet" data-nav="sheet"><i>🔗</i>شیت</a>
+  <a href="#settings" data-nav="settings"><i>⚙️</i>تنظیمات</a>
+</nav>
+
+<footer class="footer">TaskFlow Pro — مدیریت هوشمند کارها، آنلاین و آفلاین، با پشتیبانی PWA، Google Sheets Sync و نوتیفیکیشن v2.0</footer>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="modalTitle">کار جدید</h3><button class="icon-btn" id="closeModal" style="width:32px;height:32px">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>عنوان کار *</label><input id="fTitle" placeholder="مثال: پرداخت قبض برق"></div>
+      <div class="field"><label>توضیحات</label><textarea id="fDesc" placeholder="توضیح کوتاه..."></textarea></div>
+      <div class="grid2">
+        <div class="field"><label>تاریخ سررسید</label><input type="date" id="fDate"></div>
+        <div class="field"><label>ساعت یادآوری</label><input type="time" id="fTime"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>اولویت</label><select id="fPrio"><option value="high">🔴 بالا</option><option value="med" selected>🟡 متوسط</option><option value="low">🟢 پایین</option></select></div>
+        <div class="field"><label>برچسب</label><input id="fTag" placeholder="مثلا: کاری، شخصی..."></div>
+      </div>
+      <div class="field"><label>تکرار</label><select id="fRepeat"><option value="none">بدون تکرار</option><option value="daily">روزانه</option><option value="weekly">هفتگی</option><option value="weekdays">شنبه تا چهارشنبه</option></select></div>
+      <div class="hint">💡 نکته یادآوری: اگر ساعت یادآوری (مثل ۱۴:۳۰) را پر کنی، حتی وقتی مرورگر بسته باشد نوتیفیکیشن و صدای مخصوص پخش می‌شود. تلگرام هم می‌تواند به‌صورت پشتیبان یادآوری کند.</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" id="cancelModal">انصراف</button>
+      <button class="btn btn-primary" id="saveTask">ذخیره کار</button>
+    </div>
+  </div>
+</div>
+
+<!-- Template manager modal (feature 1) -->
+<div class="modal" id="tplModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>📋 مدیریت قالب‌ها</h3><button class="icon-btn" id="closeTplModal" style="width:32px;height:32px">✕</button></div>
+    <div class="modal-body">
+      <div id="tplList"></div>
+      <div class="field" style="margin-top:12px"><label>نام قالب جدید</label><input id="tplName" placeholder="مثلا: روز کاری"></div>
+      <p class="hint">قالب، کارهای فعلی را ذخیره می‌کند تا فردا با یک کلیک برگردانی</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" id="cancelTpl">انصراف</button>
+      <button class="btn btn-primary" id="saveTplBtn">ذخیره قالب</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+
+<script>
+// Native detection will be available after capacitor bridge loads
+window.isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+document.addEventListener("deviceready", ()=>{ window.isNative = true; console.log("native ready"); });
+</script>
+<script src="app.js"></script>
+</body>
+</html>

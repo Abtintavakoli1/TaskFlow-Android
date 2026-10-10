@@ -1,0 +1,19 @@
+﻿{
+  "name": "TaskFlow â€” Ø§Ù†Ø¯Ø±ÙˆÛŒØ¯",
+  "short_name": "TaskFlow",
+  "description": "TaskFlow Ø§Ù†Ø¯Ø±ÙˆÛŒØ¯ â€” Ù†Ø³Ø®Ù‡ Ù…ÙˆØ¨Ø§ÛŒÙ„ Ù…Ø³ØªÙ‚Ù„ØŒ Ù‡Ù…Ú¯Ø§Ù… Ø¨Ø§ Google Sheets",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F0FDFA",
+  "theme_color": "#0D9488",
+  "lang": "fa",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>âœ“</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "version": "2.1-android"
+}
