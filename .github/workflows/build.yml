@@ -19,6 +19,8 @@ jobs:
           node-version: 22
       - name: Install deps
         run: npm ci
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
       - name: Build APK
         run: |
           npx cap sync android
