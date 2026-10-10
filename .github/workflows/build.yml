@@ -21,21 +21,18 @@ jobs:
         run: npm ci
       - name: Build APK
         run: |
-          echo "=== Cap sync ==="
-          npx cap sync android 2>&1
-          echo "=== Gradle ==="
-          cd android && chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace --info 2>&1 | tail -n 300 | head -n 200
-          echo "=== After build ==="
-          echo "Finding APKs..."
-          find . -name "*.apk" -type f 2>/dev/null
-          find . -path "*/build/outputs/*" -type f 2>/dev/null | head -20
-          ls -R app/build/outputs/ 2>/dev/null | head -50
-          ls -la app/build/ 2>/dev/null | head -20
+          npx cap sync android
+          cd android && chmod +x gradlew && ./gradlew assembleDebug --stacktrace 2>&1 | tail -n 100
+          echo "=== FIND APK ==="
+          find android -name "*.apk" -type f 2>/dev/null | head -20
+          ls -la android/app/build/outputs/apk/debug/ 2>/dev/null || echo "no debug dir"
+          ls -la android/app/build/outputs/ 2>/dev/null || echo "no outputs"
+          echo "=== UPLOAD ANY APK ==="
+          mkdir -p /tmp/apk && find android -name "*.apk" -exec cp {} /tmp/apk/ \; 2>/dev/null; ls -lh /tmp/apk/ 2>/dev/null || echo "no apk found"
       - name: Upload APK
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: TaskFlow-APK
-          path: android/app/build/outputs/apk/debug/*.apk
-          if-no-files-found: warn
+          path: /tmp/apk/*.apk
+          if-no-files-found: error
